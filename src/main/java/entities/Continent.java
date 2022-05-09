@@ -18,9 +18,7 @@ import java.util.Set;
                         query = "select e from Continent e where e.id=?1"),
                 @NamedQuery(name = "Continent.findByName",
                         query = "select e from Continent e where e.name=?1"),
-                //?
-                @NamedQuery(name = "Continent.create",
-                        query = "insert into Continent values (?1,?2)"),
+
 
         }
 )
@@ -33,7 +31,7 @@ public class Continent implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany
-    @JoinColumn(updatable = false, insertable = false, name = "continent", referencedColumnName = "name")
+    @JoinColumn(updatable = true, insertable = false, name = "continent", referencedColumnName = "name")
     private Set<Country> countrySet;
 
     public Continent(String name) {

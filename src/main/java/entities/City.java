@@ -43,7 +43,7 @@ public class City implements Serializable {
     @Column(name = "longitude")
     private Double longitude;
     @ManyToOne
-    @JoinColumn(updatable = false, insertable = false, name = "country", referencedColumnName = "name")
+    @JoinColumn(updatable = true, insertable = false, name = "country", referencedColumnName = "name")
     private Country countryOBJ;
 
     public int getId() {

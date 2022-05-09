@@ -20,6 +20,8 @@ import java.util.Set;
                         query = "select e from Country e where e.id=?1"),
                 @NamedQuery(name = "Country.findByName",
                         query = "select e from Country e where e.name=?1"),
+                @NamedQuery(name = "Country.findCountryOfCity",
+                        query = "select e from Country e where e.name=?1"),
         }
 
 )
@@ -35,17 +37,36 @@ public class Country implements Serializable {
     @Column(name = "code")
     private Integer code;
     @Basic
-    @Column(name = "continent")
     private String continent;
     @OneToMany
-    @JoinColumn(updatable = false, insertable = false, name = "country", referencedColumnName = "name")
+    @JoinColumn(updatable = true, insertable = false, name = "country", referencedColumnName = "name")
     private Set<City> citySet;
-    @ManyToOne
-    @JoinColumn(updatable = false, insertable = false, name = "continent", referencedColumnName = "name")
-    private Continent continentOBJ;
+
+    public Country(String name) {
+        this.name = name;
+    }
+
+    @JoinColumn(updatable = true, insertable = false, name = "continent", referencedColumnName = "id")
+    private Integer continentID;
 
     public int getId() {
         return id;
+    }
+
+    public Set<City> getCitySet() {
+        return citySet;
+    }
+
+    public void setCitySet(Set<City> citySet) {
+        this.citySet = citySet;
+    }
+
+    public Integer getContinentID() {
+        return continentID;
+    }
+
+    public void setContinentID(Integer continentID) {
+        this.continentID = continentID;
     }
 
     public void setId(int id) {
