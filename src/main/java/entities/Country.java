@@ -4,13 +4,27 @@ package entities;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "countries", schema = "public", catalog = "cities")
 @NoArgsConstructor
-public class Country {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NamedQueries(
+        {
+                @NamedQuery(name = "Country.findAll", query = "select e from Country e order by  e.name"),
+                @NamedQuery(name = "Country.findByContinent",
+                        query = "select e from Country e where e.continent = ?1"),
+                @NamedQuery(name = "Country.findById",
+                        query = "select e from Country e where e.id=?1"),
+                @NamedQuery(name = "Country.findByName",
+                        query = "select e from Country e where e.name=?1"),
+        }
+
+)
+public class Country implements Serializable {
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id")
     @Id
     @Column(name = "id")
     private int id;
@@ -23,6 +37,12 @@ public class Country {
     @Basic
     @Column(name = "continent")
     private String continent;
+    @OneToMany
+    @JoinColumn(updatable = false, insertable = false, name = "country", referencedColumnName = "name")
+    private Set<City> citySet;
+    @ManyToOne
+    @JoinColumn(updatable = false, insertable = false, name = "continent", referencedColumnName = "name")
+    private Continent continentOBJ;
 
     public int getId() {
         return id;
